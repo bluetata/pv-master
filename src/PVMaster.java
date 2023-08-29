@@ -16,18 +16,18 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PVMaster {
 
-    private static int totalExecutionCount = 0;
+//    private static int totalExecutionCount = 0;
     private static final int MAX_EXECUTIONS = 900000000;  // 最大执行次数
-    private static int fixedSleepTime = 10000;    //休眠时间
-//    private static int minSleepTime = 81000;    //休眠最小时间
-//    private static int maxSleepTime = 91000;    //休眠最大时间
+    private static final int fixedSleepTime = 10000;    //休眠时间
+//    private static final int minSleepTime = 81000;    //休眠最小时间
+//    private static final int maxSleepTime = 91000;    //休眠最大时间
     private static final int MAX_CONCURRENT_THREADS = 30; // 控制并发的线程数量
     private static final int MAX_ACCESS_PER_THREAD = MAX_EXECUTIONS / MAX_CONCURRENT_THREADS;
 
 
     // Replace with your actual proxy server details
-    private static final String LOCAL_PROXY_HOST = "localhost"; // Localhost
-    private static final int LOCAL_PROXY_PORT = 8888;           // Replace with any available port
+//    private static final String LOCAL_PROXY_HOST = "localhost"; // Localhost
+//    private static final int LOCAL_PROXY_PORT = 8888;           // Replace with any available port
 
     public static void main(String[] args) {
 
@@ -90,8 +90,8 @@ public class PVMaster {
             urlCounters.put(targetUrl, 0);
             executorService.submit(() -> {
                 for (int i = 0; i < MAX_EXECUTIONS; i++) {
-                    LocalDateTime currentTime = null;
-                    String formattedTime = null;
+                    LocalDateTime currentTime;
+                    String formattedTime;
                     Random random = new Random();
                     int randomSleepTime = random.nextInt(maxSleepTime.get() - minSleepTime.get() + 1) + minSleepTime.get();
 
@@ -175,9 +175,9 @@ public class PVMaster {
 }
 
 class TimeRange {
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private int value;
+    private final LocalTime startTime;
+    private final LocalTime endTime;
+    private final int value;
 
     public TimeRange(LocalTime startTime, LocalTime endTime, int value) {
         this.startTime = startTime;
