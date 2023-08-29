@@ -70,8 +70,9 @@ public class PVMaster {
         AtomicReference<LocalTime> currentInitTime = new AtomicReference<>(LocalTime.now());
         AtomicInteger minIntervalTime = new AtomicInteger(calculateIntVariableValue(currentInitTime.get()));
 
+        // 计算随机时间（毫秒），增加了上下差值 1分钟，即如果当前设置的间隔时间是2分钟，那么会取出1~3分钟内的随机分钟数再转换成毫秒
         AtomicInteger minSleepTime = new AtomicInteger((minIntervalTime.get() - 1) * 60 * 1000);    // 休眠最小时间
-        AtomicInteger maxSleepTime = new AtomicInteger((minIntervalTime.get() + 2) * 60 * 1000);    // 休眠最大时间
+        AtomicInteger maxSleepTime = new AtomicInteger((minIntervalTime.get() + 1) * 60 * 1000);    // 休眠最大时间
 
 
         Map<String, Integer> urlCounters = new HashMap<>();
@@ -93,6 +94,7 @@ public class PVMaster {
                     LocalDateTime currentTime;
                     String formattedTime;
                     Random random = new Random();
+                    // 计算随机时间（毫秒），增加了上下差值1分钟，即如果当前设置的间隔时间是2分钟，那么会取出1~3分钟内的随机分钟数再转换成毫秒
                     int randomSleepTime = random.nextInt(maxSleepTime.get() - minSleepTime.get() + 1) + minSleepTime.get();
 
                     try {
@@ -112,7 +114,7 @@ public class PVMaster {
                         }
 
                         int adjustedSleepTime = (int) (randomSleepTime * sleepTimeFactor);
-                        System.out.println("进入【线程随机】睡眠休息 >>>> " + adjustedSleepTime / 1000 / 60 + "min");
+                        System.out.println("进入【线程随机】睡眠休息 >>>> " + adjustedSleepTime / 1000 + "s");
                         Thread.sleep(adjustedSleepTime);
 
                         connection.disconnect();
@@ -131,15 +133,19 @@ public class PVMaster {
 
                     urlCounters.put(targetUrl, urlCounters.get(targetUrl) + 1);
 
-                    // 每执行60次，获取一次当前时间，并且重新计算最小和最大间隔时间，并重新生成随机间隔时间
+                    // 每执行6次，获取一次当前时间，并且重新计算最小和最大间隔时间，并重新生成随机间隔时间
                     if (urlCounters.get(targetUrl) % 6 == 0) {
-                        System.out.println(">>>开始重新计算最小和最大间隔时间，并重新生成随机间隔时间<<<");
+                        System.out.println(">>>开始重新计算最小和最大间隔时间<<<");
                         // 获取当前时间以及最小间隔时间段（分）
                         currentInitTime.set(LocalTime.now());
                         minIntervalTime.set(calculateIntVariableValue(currentInitTime.get()));
-
+                        // 计算随机时间（毫秒），增加了上下差值1分钟，即如果当前设置的间隔时间是2分钟，
+                        // 那么会取出1~3分钟内的随机分钟数再转换成毫秒
                         minSleepTime.set((minIntervalTime.get() - 1) * 60 * 1000);    // 休眠最小时间
-                        maxSleepTime.set((minIntervalTime.get() + 2) * 60 * 1000);    // 休眠最大时间
+                        maxSleepTime.set((minIntervalTime.get() + 1) * 60 * 1000);    // 休眠最大时间
+                        System.out.println(">>>重新计算后当前最小休眠时间：" + minSleepTime + " <<<");
+                        System.out.println(">>>重新计算后当前最大休眠时间：" + maxSleepTime + " <<<");
+
                     }
 
                     System.out.println(targetUrl + " 执行次数 execution count: " + urlCounters.get(targetUrl));
