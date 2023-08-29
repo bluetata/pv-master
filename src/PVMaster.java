@@ -132,8 +132,8 @@ public class PVMaster {
                     urlCounters.put(targetUrl, urlCounters.get(targetUrl) + 1);
 
                     // 每执行60次，获取一次当前时间，并且重新计算最小和最大间隔时间，并重新生成随机间隔时间
-                    if (urlCounters.get(targetUrl) % 60 == 0) {
-
+                    if (urlCounters.get(targetUrl) % 6 == 0) {
+                        System.out.println(">>>开始重新计算最小和最大间隔时间，并重新生成随机间隔时间<<<");
                         // 获取当前时间以及最小间隔时间段（分）
                         currentInitTime.set(LocalTime.now());
                         minIntervalTime.set(calculateIntVariableValue(currentInitTime.get()));
