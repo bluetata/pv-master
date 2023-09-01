@@ -159,11 +159,11 @@ public class PVMaster {
     private static int calculateIntVariableValue(LocalTime currentTime) {
         TimeRange[] timeRanges = {
                 new TimeRange(LocalTime.of(0,  0),  LocalTime.of(7,  0),  10),
-                new TimeRange(LocalTime.of(7,  0),  LocalTime.of(9,  0),  8),
+                new TimeRange(LocalTime.of(7,  0),  LocalTime.of(9,  0),  6),
                 new TimeRange(LocalTime.of(9,  0),  LocalTime.of(12, 0),  3),
-                new TimeRange(LocalTime.of(12, 0),  LocalTime.of(13, 30), 5),
+                new TimeRange(LocalTime.of(12, 0),  LocalTime.of(13, 30), 4),
                 new TimeRange(LocalTime.of(13, 30), LocalTime.of(19, 30), 2),
-                new TimeRange(LocalTime.of(19, 30), LocalTime.of(23, 59), 5)
+                new TimeRange(LocalTime.of(19, 30), LocalTime.of(23, 59), 3)
         };
 
         int intVariableValue = 0;
